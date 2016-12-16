@@ -15,35 +15,33 @@ extern "C" {
     Artwork*    artwork;
   };
 
-  bool checkiTunesIsRunning() {
-    return [[SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"] isRunning];
-  }
+  bool checkiTunesIsRunning() { return [[SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"] isRunning]; }
 
   struct Music* getCurrentiTunesPlay() {
     iTunesApplication* iTunes;
-    iTunesTrack* current;
-    struct Music* music = NULL;
+    iTunesTrack*       current;
+    struct Music*      music = NULL;
 
     if (!checkiTunesIsRunning()) {
       return music;
     }
 
-    music = (Music*)malloc(sizeof(Music));
-
+    music   = (Music*)malloc(sizeof(Music));
     iTunes  = [SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"];
     current = [iTunes currentTrack];
 
-    music->name   = [[current name] UTF8String];
-    music->album  = [[current album] UTF8String];
+    music->name   = [[current name]   UTF8String];
+    music->album  = [[current album]  UTF8String];
     music->artist = [[current artist] UTF8String];
 
     SBElementArray<iTunesArtwork *> * artworks = [current artworks];
     Artwork* artwork = NULL;
 
     for (iTunesArtwork* _artwork in artworks) {
-      artwork = (Artwork*)malloc(sizeof(Artwork));
+      artwork         = (Artwork*)malloc(sizeof(Artwork));
       artwork->length = [[_artwork rawData] length];
-      artwork->data = (unsigned char*)malloc(artwork->length);
+      artwork->data   = (unsigned char*)malloc(artwork->length);
+
       memcpy(artwork->data, [[_artwork rawData] bytes], artwork->length);
     }
 
@@ -53,6 +51,7 @@ extern "C" {
   }
 
   void freeMusic(Music* music) {
+    free(music->artwork->data);
     free(music->artwork);
     free(music);
   }

@@ -36,7 +36,7 @@ void main() {
     "consumerKey"       : "",
     "consumerSecret"    : "",
     "accessToken"       : "",
-    "accessTokenSecret" : "" 
+    "accessTokenSecret" : ""
   ];
 
   music = getCurrentiTunesPlay();
@@ -79,4 +79,6 @@ void main() {
   } else {
     t4d.request("POST", "statuses/update.json", ["status" : nowPlayingString]);
   }
+
+  freeMusic(music);
 }
