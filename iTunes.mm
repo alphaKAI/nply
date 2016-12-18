@@ -18,9 +18,9 @@ extern "C" {
   bool checkiTunesIsRunning() { return [[SBApplication applicationWithBundleIdentifier:@"com.apple.iTunes"] isRunning]; }
 
   struct Music* getCurrentiTunesPlay() {
-    iTunesApplication* iTunes;
-    iTunesTrack*       current;
-    struct Music*      music = NULL;
+    iTunesApplication* iTunes  = NULL;
+    iTunesTrack*       current = NULL;
+    struct Music*      music   = NULL;
 
     if (!checkiTunesIsRunning()) {
       return music;
@@ -34,8 +34,8 @@ extern "C" {
     music->album  = [[current album]  UTF8String];
     music->artist = [[current artist] UTF8String];
 
-    SBElementArray<iTunesArtwork *> * artworks = [current artworks];
-    Artwork* artwork = NULL;
+    SBElementArray<iTunesArtwork*>* artworks = [current artworks];
+    Artwork*                        artwork  = NULL;
 
     for (iTunesArtwork* _artwork in artworks) {
       artwork         = (Artwork*)malloc(sizeof(Artwork));
