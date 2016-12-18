@@ -37,12 +37,22 @@ extern "C" {
     SBElementArray<iTunesArtwork*>* artworks = [current artworks];
     Artwork*                        artwork  = NULL;
 
-    for (iTunesArtwork* _artwork in artworks) {
-      artwork         = (Artwork*)malloc(sizeof(Artwork));
-      artwork->length = [[_artwork rawData] length];
-      artwork->data   = (unsigned char*)malloc(artwork->length);
+    {
+      bool flag = true;
 
-      memcpy(artwork->data, [[_artwork rawData] bytes], artwork->length);
+      for (iTunesArtwork* _artwork in artworks) {
+        artwork         = (Artwork*)malloc(sizeof(Artwork));
+        artwork->length = [[_artwork rawData] length];
+        artwork->data   = (unsigned char*)malloc(artwork->length);
+
+        memcpy(artwork->data, [[_artwork rawData] bytes], artwork->length);
+
+        flag = false;
+      }
+
+      if (flag) {
+        artwork->data = NULL;
+      }
     }
 
     music->artwork = artwork;
