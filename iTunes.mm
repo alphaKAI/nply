@@ -49,13 +49,17 @@ extern "C" {
     SBElementArray<iTunesArtwork*>* artworks = [current artworks];
     Artwork*                        artwork  = NULL;
 
-
     for (iTunesArtwork* _artwork in artworks) {
       artwork         = (Artwork*)xmalloc(sizeof(Artwork));
       artwork->length = [[_artwork rawData] length];
-      artwork->data   = (unsigned char*)xmalloc(artwork->length);
 
-      memcpy(artwork->data, [[_artwork rawData] bytes], artwork->length);
+      if (artwork->length) {
+        artwork->data = (unsigned char*)xmalloc(artwork->length);
+
+        memcpy(artwork->data, [[_artwork rawData] bytes], artwork->length);
+      } else {
+        artwork->data = NULL;
+      }
     }
 
     music->artwork = artwork;
@@ -64,11 +68,14 @@ extern "C" {
   }
 
   void freeMusic(Music* music) {
-    if (music->artwork != NULL) {
+    if (music->artwork != NULL && music->artwork->length) {
       free(music->artwork->data);
-      free(music->artwork);
+      music->artwork->data = NULL;
     }
+    free(music->artwork);
+    music->artwork = NULL;
     free(music);
+    music = NULL;
   }
 }
 
