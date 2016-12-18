@@ -82,9 +82,17 @@ private static Music* checkTrackChange() {
 
     currentMusic = cast(string)fromStringz(music.name).idup;
 
+    if (currentMusic == "") {
+      freeMusic(music);
+
+      return null;
+    }
+
     if (currentMusic != previousMusic) {
       return music;
     } else {
+      freeMusic(music);
+
       return null;
     }
   }
@@ -93,6 +101,7 @@ private static Music* checkTrackChange() {
 private static void tweet() {
   with (E) {
     music = checkTrackChange;
+
     if (music is null) {
       return;
     }
