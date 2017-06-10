@@ -1,19 +1,19 @@
-#nply - NowPlaying4D
+# nply - NowPlaying4D
 NowPlaying tweet tool in D with OS X's iTunes(using Scripting Bridge).  
 
-##Requirements
+## Requirements
 
 - OS X(macOS)
 - Latest DMD
 - Xcode(for sdef)
   
   
-##Setup
+## Setup
 
-###1. Clone this repository
+### 1. Clone this repository
 `$ git clone https://github.com/alphaKAI/nply`
 
-###2. Write your your keys in settings.json
+### 2. Write your your keys in settings.json
 `$ (your favorite editor) settings.json`
 
 Please configure as follows:  
@@ -27,10 +27,10 @@ Please configure as follows:
 }
 ```
 
-###3. Generate header of iTunes.h with sdef command
+### 3. Generate header of iTunes.h with sdef command
 `$ sdef /Applications/iTunes.app | sdp -fh --basename iTunes`
 
-###4. Build
+### 4. Build
 
 ```zsh
 $ gcc -c iTunes.mm
@@ -40,7 +40,7 @@ $ dmd nply.d twitter4d.d iTunes.o kqueuez.d -L-framework -LFoundation -L-framewo
 Complete!  
 Now you can post #NowPlaying with `./nply` if iTunes is playing.  
 
-##LICENSE
+## LICENSE
 This software is released under the MIT license.  
 Please see `LICENSE` file for details.  
 Copyright (C) 2016 Akihiro Shoji
